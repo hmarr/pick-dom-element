@@ -2,7 +2,9 @@
 
 A JavaScript library (written in TypeScript) for interactively picking DOM elements.
 
-![Demo GIF](https://user-images.githubusercontent.com/110275/95014911-02d42d80-0642-11eb-856e-301b00f8fbf9.gif)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/110275/95014911-02d42d80-0642-11eb-856e-301b00f8fbf9.gif" width="500px" />
+</p>
 
 ## Usage
 

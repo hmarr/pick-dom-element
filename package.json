@@ -1,6 +1,6 @@
 {
   "name": "pick-dom-element",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Interactively pick elements in the DOM",
   "author": "Harry Marr",
   "license": "MIT",
@@ -10,10 +10,10 @@
     "dist"
   ],
   "scripts": {
+    "prepublish": "npm run build",
     "build": "tsc",
     "watch": "tsc --watch"
   },
-  "prepublish": "tsc",
   "devDependencies": {
     "typescript": "^4.0.2"
   }

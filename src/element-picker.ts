@@ -2,37 +2,41 @@ import ElementOverlay from "./element-overlay";
 import { getElementBounds } from "./utils";
 
 type ElementCallback = (el: HTMLElement) => void;
-type ElementCallbacks = {
+type ElementPickerOptions = {
+  parentElement?: Node;
+  useShadowDOM?: boolean;
   onClick?: ElementCallback;
   onHover?: ElementCallback;
 };
 
 export default class ElementPicker {
   private overlay: ElementOverlay;
-  private callbacks?: ElementCallbacks;
+  private active: boolean;
+  private options?: ElementPickerOptions;
   private target?: HTMLElement;
   private mouseX?: number;
   private mouseY?: number;
   private tickReq?: number;
 
   constructor() {
+    this.active = false;
     this.overlay = new ElementOverlay();
   }
 
-  start(
-    parent: Node,
-    useShadowDOM: boolean,
-    callbacks: ElementCallbacks
-  ): boolean {
-    if (this.callbacks) {
+  start(options: ElementPickerOptions): boolean {
+    if (this.active) {
       return false;
     }
 
-    this.callbacks = callbacks;
+    this.active = true;
+    this.options = options;
     document.addEventListener("mousemove", this.handleMouseMove, true);
     document.addEventListener("click", this.handleClick, true);
 
-    this.overlay.addToDOM(parent, useShadowDOM);
+    this.overlay.addToDOM(
+      options.parentElement ?? document.body,
+      options.useShadowDOM ?? true
+    );
 
     this.tick();
 
@@ -40,7 +44,8 @@ export default class ElementPicker {
   }
 
   stop() {
-    this.callbacks = undefined;
+    this.active = false;
+    this.options = undefined;
     document.removeEventListener("mousemove", this.handleMouseMove, true);
     document.removeEventListener("click", this.handleClick, true);
 
@@ -57,8 +62,8 @@ export default class ElementPicker {
   };
 
   private handleClick = (event: MouseEvent) => {
-    if (this.target && this.callbacks?.onClick) {
-      this.callbacks.onClick(this.target);
+    if (this.target && this.options?.onClick) {
+      this.options.onClick(this.target);
     }
     event.preventDefault();
   };
@@ -76,8 +81,8 @@ export default class ElementPicker {
         const bounds = getElementBounds(newTarget);
         this.overlay.setBounds(bounds);
 
-        if (this.callbacks?.onHover) {
-          this.callbacks.onHover(newTarget);
+        if (this.options?.onHover) {
+          this.options.onHover(newTarget);
         }
       }
     }

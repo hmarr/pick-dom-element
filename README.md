@@ -12,7 +12,7 @@ Create an instance of the `ElementPicker` class, and call its `start()` method t
 import { ElementPicker } from "pick-dom-element";
 
 const picker = new ElementPicker();
-picker.start(document.body, {
+picker.start({
   onHover: (el) => console.log(`Hover: ${el}`),
   onClick: (el) => {
     picker.stop();

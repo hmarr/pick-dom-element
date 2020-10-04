@@ -1,54 +1,61 @@
 import { BoundingBox } from "./utils";
 
 export default class ElementOverlay {
-  el: HTMLDivElement;
+  overlay: HTMLDivElement;
+  shadowContainer: HTMLDivElement;
+  shadowRoot: ShadowRoot;
+  usingShadowDOM?: boolean;
 
   constructor() {
-    this.el = document.createElement("div");
-    this.el.className = "_ext-element-overlay";
-    this.el.style.background = "rgba(250, 240, 202, 0.2)";
-    this.el.style.borderColor = "#F95738";
-    this.el.style.borderStyle = "solid";
-    this.el.style.borderRadius = "1px";
-    this.el.style.borderWidth = "1px";
-    this.el.style.boxSizing = "border-box";
-    this.el.style.cursor = "crosshair";
-    this.el.style.position = "absolute";
-    this.el.style.zIndex = "2147483647";
+    this.overlay = document.createElement("div");
+    this.overlay.className = "_ext-element-overlay";
+    this.overlay.style.background = "rgba(250, 240, 202, 0.2)";
+    this.overlay.style.borderColor = "#F95738";
+    this.overlay.style.borderStyle = "solid";
+    this.overlay.style.borderRadius = "1px";
+    this.overlay.style.borderWidth = "1px";
+    this.overlay.style.boxSizing = "border-box";
+    this.overlay.style.cursor = "crosshair";
+    this.overlay.style.position = "absolute";
+    this.overlay.style.zIndex = "2147483647";
+
+    this.shadowContainer = document.createElement("div");
+    this.shadowContainer.className = "_ext-element-overlay-container";
+    this.shadowContainer.style.position = "absolute";
+    this.shadowContainer.style.top = "0px";
+    this.shadowContainer.style.left = "0px";
+    this.shadowRoot = this.shadowContainer.attachShadow({ mode: "open" });
   }
 
   addToDOM(parent: Node, useShadowDOM: boolean) {
-    let container = parent;
-
+    this.usingShadowDOM = useShadowDOM;
     if (useShadowDOM) {
-      const shadowContainer = document.createElement("div");
-      shadowContainer.style.position = "absolute";
-      shadowContainer.style.top = "0px";
-      shadowContainer.style.left = "0px";
-
-      parent.insertBefore(shadowContainer, parent.firstChild);
-      container = shadowContainer.attachShadow({ mode: "open" });
+      parent.insertBefore(this.shadowContainer, parent.firstChild);
+      this.shadowRoot.appendChild(this.overlay);
+    } else {
+      parent.appendChild(this.overlay);
     }
-
-    container.appendChild(this.el);
   }
 
   removeFromDOM() {
-    this.el.remove();
+    this.overlay.remove();
+    if (this.usingShadowDOM) {
+      this.shadowContainer.remove();
+    }
   }
 
   captureCursor() {
-    this.el.style.pointerEvents = "auto";
+    this.overlay.style.pointerEvents = "auto";
   }
 
   ignoreCursor() {
-    this.el.style.pointerEvents = "none";
+    this.overlay.style.pointerEvents = "none";
   }
 
   setBounds({ x, y, width, height }: BoundingBox) {
-    this.el.style.left = x + "px";
-    this.el.style.top = y + "px";
-    this.el.style.width = width + "px";
-    this.el.style.height = height + "px";
+    this.overlay.style.left = x + "px";
+    this.overlay.style.top = y + "px";
+    this.overlay.style.width = width + "px";
+    this.overlay.style.height = height + "px";
   }
 }

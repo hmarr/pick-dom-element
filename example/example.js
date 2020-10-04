@@ -19,7 +19,7 @@ function main() {
   const picker = new ElementPicker();
   const start = () => {
     startButton.disabled = true;
-    picker.start(document.body, {
+    picker.start({
       onHover: setElement,
       onClick: () => {
         picker.stop();

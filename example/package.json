@@ -1,0 +1,17 @@
+{
+  "name": "pick-dom-element-example",
+  "description": "",
+  "version": "1.0.0",
+  "main": "example.js",
+  "scripts": {
+    "start": "snowpack dev"
+  },
+  "author": "Harry Marr",
+  "license": "MIT",
+  "devDependencies": {
+    "snowpack": "^2.13.1"
+  },
+  "dependencies": {
+    "pick-dom-element": "file:.."
+  }
+}

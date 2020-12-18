@@ -3,6 +3,7 @@ import { ElementPicker } from "pick-dom-element";
 function main() {
   const status = document.getElementById("status");
   const startButton = document.getElementById("start");
+  const onlyEmphasisCheckbox = document.getElementById("only-emphasis");
 
   const setElement = (el) => {
     const tags = [];
@@ -17,6 +18,10 @@ function main() {
   };
 
   const picker = new ElementPicker();
+  let onlyEmphasis = onlyEmphasisCheckbox.checked;
+  onlyEmphasisCheckbox.onchange = (ev) => {
+    onlyEmphasis = ev.target.checked;
+  }
   const start = () => {
     startButton.disabled = true;
     picker.start({
@@ -25,6 +30,12 @@ function main() {
         picker.stop();
         startButton.disabled = false;
       },
+      elementFilter: (el) => {
+        if (!onlyEmphasis) {
+          return true;
+        }
+        return ['I', 'B'].includes(el.tagName);
+      }
     });
   };
 

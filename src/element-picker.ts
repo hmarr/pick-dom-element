@@ -1,12 +1,13 @@
 import ElementOverlay from "./element-overlay";
 import { getElementBounds } from "./utils";
 
-type ElementCallback = (el: HTMLElement) => void;
+type ElementCallback<T> = (el: HTMLElement) => T;
 type ElementPickerOptions = {
   parentElement?: Node;
   useShadowDOM?: boolean;
-  onClick?: ElementCallback;
-  onHover?: ElementCallback;
+  onClick?: ElementCallback<void>;
+  onHover?: ElementCallback<void>;
+  elementFilter?: ElementCallback<boolean>;
 };
 
 export default class ElementPicker {
@@ -50,6 +51,9 @@ export default class ElementPicker {
     document.removeEventListener("click", this.handleClick, true);
 
     this.overlay.removeFromDOM();
+    this.target = undefined;
+    this.mouseX = undefined;
+    this.mouseY = undefined;
 
     if (this.tickReq) {
       window.cancelAnimationFrame(this.tickReq);
@@ -69,24 +73,43 @@ export default class ElementPicker {
   };
 
   private tick = () => {
-    if (this.mouseX && this.mouseY) {
-      this.overlay.ignoreCursor();
-      const elAtCursor = document.elementFromPoint(this.mouseX, this.mouseY);
-      const newTarget = elAtCursor as HTMLElement;
-      this.overlay.captureCursor();
+    this.updateTarget();
+    this.tickReq = window.requestAnimationFrame(this.tick);
+  };
 
-      if (newTarget && newTarget !== this.target) {
-        this.target = newTarget;
+  private updateTarget() {
+    if (this.mouseX === undefined || this.mouseY === undefined) {
+      return;
+    }
 
-        const bounds = getElementBounds(newTarget);
-        this.overlay.setBounds(bounds);
+    // Peek through the overlay to find the new target
+    this.overlay.ignoreCursor();
+    const elAtCursor = document.elementFromPoint(this.mouseX, this.mouseY);
+    const newTarget = elAtCursor as HTMLElement;
+    this.overlay.captureCursor();
 
-        if (this.options?.onHover) {
-          this.options.onHover(newTarget);
-        }
+    // If the target hasn't changed, there's nothing to do
+    if (!newTarget || newTarget === this.target) {
+      return;
+    }
+
+    // If we have an element filter and the new target doesn't match,
+    // clear out the target
+    if (this.options?.elementFilter) {
+      if (!this.options.elementFilter(newTarget)) {
+        this.target = undefined;
+        this.overlay.setBounds({ x: 0, y: 0, width: 0, height: 0 });
+        return;
       }
     }
 
-    this.tickReq = window.requestAnimationFrame(this.tick);
-  };
+    this.target = newTarget;
+
+    const bounds = getElementBounds(newTarget);
+    this.overlay.setBounds(bounds);
+
+    if (this.options?.onHover) {
+      this.options.onHover(newTarget);
+    }
+  }
 }

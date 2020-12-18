@@ -38,6 +38,7 @@ export default class ElementOverlay {
   }
 
   removeFromDOM() {
+    this.setBounds({ x: 0, y: 0, width: 0, height: 0 });
     this.overlay.remove();
     if (this.usingShadowDOM) {
       this.shadowContainer.remove();

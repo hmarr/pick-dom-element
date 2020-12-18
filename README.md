@@ -1,5 +1,7 @@
 # pick-dom-element
 
+[![npm version](https://badge.fury.io/js/pick-dom-element.svg)](https://badge.fury.io/js/pick-dom-element)
+
 A JavaScript library (written in TypeScript) for interactively picking DOM elements.
 
 <p align="center">

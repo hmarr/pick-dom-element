@@ -33,23 +33,25 @@ export default class ElementPicker {
     this.options = options;
     document.addEventListener("mousemove", this.handleMouseMove, true);
     document.addEventListener("click", this.handleClick, true);
-
+    document.addEventListener("keydown", this.handleKeyDown, true);
     this.overlay.addToDOM(
       options.parentElement ?? document.body,
       options.useShadowDOM ?? true
     );
 
-    this.tick();
+    // this.tick();
 
     return true;
   }
+
+
 
   stop() {
     this.active = false;
     this.options = undefined;
     document.removeEventListener("mousemove", this.handleMouseMove, true);
     document.removeEventListener("click", this.handleClick, true);
-
+    document.removeEventListener("keydown", this.handleKeyDown, true);
     this.overlay.removeFromDOM();
     this.target = undefined;
     this.mouseX = undefined;
@@ -63,6 +65,7 @@ export default class ElementPicker {
   private handleMouseMove = (event: MouseEvent) => {
     this.mouseX = event.clientX;
     this.mouseY = event.clientY;
+    this.updateTarget();
   };
 
   private handleClick = (event: MouseEvent) => {
@@ -72,12 +75,37 @@ export default class ElementPicker {
     event.preventDefault();
   };
 
+  private handleKeyDown = (event: KeyboardEvent) => {
+    let preventDefault = true;
+    if(event.key == 'Escape')
+    {
+      this.stop();
+    }
+    else if(event.key === 'ArrowUp'){
+      this.updateTarget(this.target?.parentElement);
+    }
+    else if(event.key === 'ArrowDown'){
+      this.updateTarget(this.target?.firstElementChild as HTMLElement);
+    }
+    else if(event.key === 'ArrowLeft'){
+      this.updateTarget(this.target?.previousElementSibling as HTMLElement);
+    }
+    else if(event.key === 'ArrowRight'){
+      this.updateTarget(this.target?.nextElementSibling as HTMLElement);
+    }
+    else {
+      preventDefault = false;
+    }
+    if(preventDefault)
+      event.preventDefault();
+  };
+
   private tick = () => {
     this.updateTarget();
     this.tickReq = window.requestAnimationFrame(this.tick);
   };
 
-  private updateTarget() {
+  private updateTarget(assignTarget: HTMLElement | null = null) {
     if (this.mouseX === undefined || this.mouseY === undefined) {
       return;
     }
@@ -85,7 +113,9 @@ export default class ElementPicker {
     // Peek through the overlay to find the new target
     this.overlay.ignoreCursor();
     const elAtCursor = document.elementFromPoint(this.mouseX, this.mouseY);
-    const newTarget = elAtCursor as HTMLElement;
+    let newTarget = elAtCursor as HTMLElement;
+    if(assignTarget)
+      newTarget = assignTarget;
     this.overlay.captureCursor();
 
     // If the target hasn't changed, there's nothing to do

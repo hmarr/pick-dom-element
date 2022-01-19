@@ -18,8 +18,10 @@ function main() {
   };
 
   const picker = new ElementPicker({
-    background: "rgba(153, 235, 255, 0.5)",
-    borderColor: "yellow"
+    style: {
+      background: "rgba(153, 235, 255, 0.5)",
+      borderColor: "yellow"
+    },
   });
   let onlyEmphasis = onlyEmphasisCheckbox.checked;
   onlyEmphasisCheckbox.onchange = (ev) => {

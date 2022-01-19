@@ -1,5 +1,5 @@
 import ElementOverlay from "./element-overlay";
-import { getElementBounds } from "./utils";
+import { getElementBounds, ElementOverlayOptions } from "./utils";
 
 type ElementCallback<T> = (el: HTMLElement) => T;
 type ElementPickerOptions = {
@@ -19,9 +19,9 @@ export default class ElementPicker {
   private mouseY?: number;
   private tickReq?: number;
 
-  constructor() {
+  constructor(overlayOptions: ElementOverlayOptions) {
     this.active = false;
-    this.overlay = new ElementOverlay();
+    this.overlay = new ElementOverlay(overlayOptions || {});
   }
 
   start(options: ElementPickerOptions): boolean {

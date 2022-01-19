@@ -1,4 +1,4 @@
-import { BoundingBox } from "./utils";
+import { BoundingBox, ElementOverlayOptions } from "./utils";
 
 export default class ElementOverlay {
   overlay: HTMLDivElement;
@@ -6,16 +6,16 @@ export default class ElementOverlay {
   shadowRoot: ShadowRoot;
   usingShadowDOM?: boolean;
 
-  constructor() {
+  constructor(options: ElementOverlayOptions) {
     this.overlay = document.createElement("div");
     this.overlay.className = "_ext-element-overlay";
-    this.overlay.style.background = "rgba(250, 240, 202, 0.2)";
-    this.overlay.style.borderColor = "#F95738";
-    this.overlay.style.borderStyle = "solid";
-    this.overlay.style.borderRadius = "1px";
-    this.overlay.style.borderWidth = "1px";
-    this.overlay.style.boxSizing = "border-box";
-    this.overlay.style.cursor = "crosshair";
+    this.overlay.style.background = options.background || "rgba(250, 240, 202, 0.2)";
+    this.overlay.style.borderColor = options.borderColor || "#F95738";
+    this.overlay.style.borderStyle = options.borderStyle || "solid";
+    this.overlay.style.borderRadius = options.borderRadius || "1px";
+    this.overlay.style.borderWidth = options.borderWidth || "1px";
+    this.overlay.style.boxSizing = options.boxSizing || "border-box";
+    this.overlay.style.cursor = options.cursor || "crosshair";
     this.overlay.style.position = "absolute";
     this.overlay.style.zIndex = "2147483647";
 

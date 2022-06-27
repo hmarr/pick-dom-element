@@ -4,6 +4,7 @@ export interface BoundingBox {
   width: number;
   height: number;
 }
+
 export interface ElementOverlayStyleOptions {
   background?: string;
   borderColor?: string;

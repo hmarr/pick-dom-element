@@ -4,8 +4,8 @@ export interface BoundingBox {
   width: number;
   height: number;
 }
-export type ElementOverlayOptions = {
-  className?: string;
+
+export interface ElementOverlayStyleOptions {
   background?: string;
   borderColor?: string;
   borderStyle?: string;
@@ -15,6 +15,11 @@ export type ElementOverlayOptions = {
   cursor?: string;
   position?: string;
   zIndex?: string;
+};
+
+export type ElementOverlayOptions = {
+  className?: string;
+  style?: ElementOverlayStyleOptions;
 };
 export const getElementBounds = (el: HTMLElement): BoundingBox => {
   const rect = el.getBoundingClientRect();

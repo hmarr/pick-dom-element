@@ -18,7 +18,6 @@ export default class ElementOverlay {
     this.overlay.style.cursor = options.style?.cursor || "crosshair";
     this.overlay.style.position = options.style?.position || "absolute";
     this.overlay.style.zIndex = options.style?.zIndex || "2147483647";
-
     this.shadowContainer = document.createElement("div");
     this.shadowContainer.className = "_ext-element-overlay-container";
     this.shadowContainer.style.position = "absolute";

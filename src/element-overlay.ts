@@ -9,16 +9,15 @@ export default class ElementOverlay {
   constructor(options: ElementOverlayOptions) {
     this.overlay = document.createElement("div");
     this.overlay.className = options.className || "_ext-element-overlay";
-    this.overlay.style.background = options.background || "rgba(250, 240, 202, 0.2)";
-    this.overlay.style.borderColor = options.borderColor || "#F95738";
-    this.overlay.style.borderStyle = options.borderStyle || "solid";
-    this.overlay.style.borderRadius = options.borderRadius || "1px";
-    this.overlay.style.borderWidth = options.borderWidth || "1px";
-    this.overlay.style.boxSizing = options.boxSizing || "border-box";
-    this.overlay.style.cursor = options.cursor || "crosshair";
-    this.overlay.style.position = options.position || "absolute";
-    this.overlay.style.zIndex = options.zIndex || "2147483647";
-
+    this.overlay.style.background = options.style?.background || "rgba(250, 240, 202, 0.2)";
+    this.overlay.style.borderColor = options.style?.borderColor || "#F95738";
+    this.overlay.style.borderStyle = options.style?.borderStyle || "solid";
+    this.overlay.style.borderRadius = options.style?.borderRadius || "1px";
+    this.overlay.style.borderWidth = options.style?.borderWidth || "1px";
+    this.overlay.style.boxSizing = options.style?.boxSizing || "border-box";
+    this.overlay.style.cursor = options.style?.cursor || "crosshair";
+    this.overlay.style.position = options.style?.position || "absolute";
+    this.overlay.style.zIndex = options.style?.zIndex || "2147483647";
     this.shadowContainer = document.createElement("div");
     this.shadowContainer.className = "_ext-element-overlay-container";
     this.shadowContainer.style.position = "absolute";

@@ -5,6 +5,23 @@ export interface BoundingBox {
   height: number;
 }
 
+export interface ElementOverlayStyleOptions {
+  background?: string;
+  borderColor?: string;
+  borderStyle?: string;
+  borderRadius?: string;
+  borderWidth?: string;
+  boxSizing?: string;
+  cursor?: string;
+  position?: string;
+  zIndex?: string;
+};
+
+export type ElementOverlayOptions = {
+  className?: string;
+  style?: ElementOverlayStyleOptions;
+};
+
 export const getElementBounds = (el: HTMLElement): BoundingBox => {
   const rect = el.getBoundingClientRect();
   return {

@@ -4,12 +4,12 @@
   "version": "1.0.0",
   "main": "example.js",
   "scripts": {
-    "start": "snowpack dev"
+    "start": "vite --open"
   },
   "author": "Harry Marr",
   "license": "MIT",
   "devDependencies": {
-    "snowpack": "^2.13.1"
+    "vite": "^2.9.13"
   },
   "dependencies": {
     "pick-dom-element": "file:.."

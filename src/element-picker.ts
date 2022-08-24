@@ -19,9 +19,9 @@ export default class ElementPicker {
   private mouseY?: number;
   private tickReq?: number;
 
-  constructor(overlayOptions: ElementOverlayOptions) {
+  constructor(overlayOptions?: ElementOverlayOptions) {
     this.active = false;
-    this.overlay = new ElementOverlay(overlayOptions || {});
+    this.overlay = new ElementOverlay(overlayOptions ?? {});
   }
 
   start(options: ElementPickerOptions): boolean {

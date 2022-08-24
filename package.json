@@ -1,6 +1,6 @@
 {
   "name": "pick-dom-element",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Interactively pick elements in the DOM",
   "author": "Harry Marr",
   "license": "MIT",

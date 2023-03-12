@@ -7,7 +7,7 @@ type ElementPickerOptions = {
   useShadowDOM?: boolean;
   onClick?: ElementCallback<void>;
   onHover?: ElementCallback<void>;
-  elementFilter?: ElementCallback<boolean>;
+  elementFilter?: ElementCallback<boolean | HTMLElement>;
 };
 
 export default class ElementPicker {
@@ -85,7 +85,7 @@ export default class ElementPicker {
     // Peek through the overlay to find the new target
     this.overlay.ignoreCursor();
     const elAtCursor = document.elementFromPoint(this.mouseX, this.mouseY);
-    const newTarget = elAtCursor as HTMLElement;
+    let newTarget = elAtCursor as HTMLElement;
     this.overlay.captureCursor();
 
     // If the target hasn't changed, there's nothing to do
@@ -96,10 +96,18 @@ export default class ElementPicker {
     // If we have an element filter and the new target doesn't match,
     // clear out the target
     if (this.options?.elementFilter) {
-      if (!this.options.elementFilter(newTarget)) {
+      const filterResult = this.options.elementFilter(newTarget)
+      if (filterResult === false) {
         this.target = undefined;
         this.overlay.setBounds({ x: 0, y: 0, width: 0, height: 0 });
         return;
+      }
+      // If the filter returns an element, use that element as new target
+      else if (typeof filterResult !== "boolean") {
+        if (filterResult === this.target) {
+          return;
+        }
+        newTarget = filterResult
       }
     }
 

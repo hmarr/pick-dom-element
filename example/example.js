@@ -4,6 +4,7 @@ function main() {
   const status = document.getElementById("status");
   const startButton = document.getElementById("start");
   const onlyEmphasisCheckbox = document.getElementById("only-emphasis");
+  const onlyParagraphsCheckbox = document.getElementById("only-paragraphs");
 
   const setElement = (el) => {
     const tags = [];
@@ -27,6 +28,10 @@ function main() {
   onlyEmphasisCheckbox.onchange = (ev) => {
     onlyEmphasis = ev.target.checked;
   }
+  let onlyParagraphs = onlyParagraphsCheckbox.checked;
+  onlyParagraphsCheckbox.onchange = (ev) => {
+    onlyParagraphs = ev.target.checked;
+  }
   const start = () => {
     startButton.disabled = true;
     picker.start({
@@ -36,10 +41,14 @@ function main() {
         startButton.disabled = false;
       },
       elementFilter: (el) => {
-        if (!onlyEmphasis) {
-          return true;
+        if (onlyEmphasis) {
+          return ['I', 'B'].includes(el.tagName);
         }
-        return ['I', 'B'].includes(el.tagName);
+        else if (onlyParagraphs) {
+          const paragraph = el.closest("p, h1")
+          return paragraph ?? false
+        }
+        return true;
       }
     });
   };

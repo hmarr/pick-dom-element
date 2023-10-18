@@ -15,6 +15,8 @@ export interface ElementOverlayStyleOptions {
   cursor?: string;
   position?: string;
   zIndex?: string;
+  margin?: string;
+  padding?: string;
 };
 
 export type ElementOverlayOptions = {

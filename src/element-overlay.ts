@@ -18,12 +18,16 @@ export default class ElementOverlay {
     this.overlay.style.cursor = options.style?.cursor || "crosshair";
     this.overlay.style.position = options.style?.position || "absolute";
     this.overlay.style.zIndex = options.style?.zIndex || "2147483647";
+    this.overlay.style.margin = options.style?.margin || "0px";
+    this.overlay.style.padding = options.style?.padding || "0px";
 
     this.shadowContainer = document.createElement("div");
     this.shadowContainer.className = "_ext-element-overlay-container";
     this.shadowContainer.style.position = "absolute";
     this.shadowContainer.style.top = "0px";
     this.shadowContainer.style.left = "0px";
+    this.shadowContainer.style.margin = "0px";
+    this.shadowContainer.style.padding = "0px";
     this.shadowRoot = this.shadowContainer.attachShadow({ mode: "open" });
   }
 
